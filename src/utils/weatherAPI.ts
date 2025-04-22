@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { GeoLocation, WeatherData } from '../types';
 
-const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+const API_KEY = '85b8917db6433de09908b452b192d928';
 const BASE_URL = 'https://api.openweathermap.org';
 
 // Function to get the user's current location
@@ -77,6 +77,7 @@ export const fetchWeatherData = async (
         description: response.data.weather[0].description,
         icon: response.data.weather[0].icon,
         main: response.data.weather[0].main,
+        location: response.data.name
       };
     }
 
