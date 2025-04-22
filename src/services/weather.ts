@@ -1,6 +1,6 @@
 import { GeoLocation, WeatherData } from '../types';
 
-const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
+const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
 
 export const getWeatherData = async (location: GeoLocation): Promise<WeatherData> => {
