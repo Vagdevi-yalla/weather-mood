@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { WeatherDisplay } from '../components/WeatherDisplay';
 import { MoodSelector } from '../components/MoodSelector';
 import { NoteInput } from '../components/NoteInput';
@@ -9,12 +10,14 @@ import { moodService } from '../services/moodService';
 import { getMoodColors, getTemperatureBackground } from '../utils/theme';
 
 export const Dashboard = () => {
+  const navigate = useNavigate();
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [selectedMood, setSelectedMood] = useState<MoodType | null>(null);
   const [note, setNote] = useState('');
   const [quote, setQuote] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const moodColors = getMoodColors(selectedMood);
   const temperatureBackground = weather ? getTemperatureBackground(weather.temp) : '';
@@ -48,7 +51,10 @@ export const Dashboard = () => {
 
   const handleSaveMood = async () => {
     if (!selectedMood || !weather) return;
+    setShowConfirmation(true);
+  };
 
+  const handleConfirmSave = async () => {
     try {
       await moodService.addEntry({
         date: new Date().toISOString(),
@@ -67,6 +73,10 @@ export const Dashboard = () => {
       // Reset form
       setSelectedMood(null);
       setNote('');
+      setShowConfirmation(false);
+      
+      // Redirect to notes page
+      navigate('/notes');
     } catch (err) {
       setError('Failed to save mood entry');
     }
@@ -162,6 +172,32 @@ export const Dashboard = () => {
           </blockquote>
         </div>
       </div>
+
+      {/* Confirmation Dialog */}
+      {showConfirmation && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+            <h3 className="text-xl font-semibold mb-4">Save Entry</h3>
+            <p className="text-gray-600 mb-6">
+              Do you want to save this mood entry? Your notes will be saved and you'll be redirected to the notes page.
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setShowConfirmation(false)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmSave}
+                className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
+              >
+                Save & Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }; 
