@@ -28,6 +28,7 @@ const YourMood = () => {
         mood: selectedMood,
         notes: note,
         weather: {
+          location:"",
           temp: 0,
           humidity: 0,
           description: 'Not available',
