@@ -108,10 +108,7 @@ const Index = () => {
             <div className="w-full max-w-2xl mx-auto">
               <WeatherDisplay 
                 weather={weather} 
-                location={location} 
                 isLoading={loading}
-                error={error}
-                onRetry={fetchWeatherInfo}
               />
             </div>
             

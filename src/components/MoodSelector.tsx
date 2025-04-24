@@ -9,19 +9,19 @@ interface MoodOption {
 }
 
 const moods: MoodOption[] = [
-  { type: 1, emoji: '😊', color: 'bg-yellow-100 hover:bg-yellow-200', label: 'Happy' },
-  { type: 2, emoji: '🤩', color: 'bg-orange-100 hover:bg-orange-200', label: 'Excited' },
-  { type: 3, emoji: '😌', color: 'bg-blue-100 hover:bg-blue-200', label: 'Calm' },
-  { type: 4, emoji: '😢', color: 'bg-gray-100 hover:bg-gray-200', label: 'Sad' },
-  { type: 5, emoji: '😠', color: 'bg-red-100 hover:bg-red-200', label: 'Angry' }
+  { type: 'happy', emoji: '😊', color: 'bg-yellow-100 hover:bg-yellow-200', label: 'Happy' },
+  { type: 'excited', emoji: '🤩', color: 'bg-orange-100 hover:bg-orange-200', label: 'Excited' },
+  { type: 'calm', emoji: '😌', color: 'bg-blue-100 hover:bg-blue-200', label: 'Calm' },
+  { type: 'sad', emoji: '😢', color: 'bg-gray-100 hover:bg-gray-200', label: 'Sad' },
+  { type: 'angry', emoji: '😠', color: 'bg-red-100 hover:bg-red-200', label: 'Angry' }
 ];
 
 interface MoodSelectorProps {
   onSelect: (mood: MoodType) => void;
-  selectedMood?: MoodType;
+  selected?: MoodType;
 }
 
-export const MoodSelector = ({ onSelect, selectedMood }: MoodSelectorProps) => {
+export const MoodSelector = ({ onSelect, selected }: MoodSelectorProps) => {
   const [hoveredMood, setHoveredMood] = useState<MoodType | null>(null);
 
   return (
@@ -37,7 +37,7 @@ export const MoodSelector = ({ onSelect, selectedMood }: MoodSelectorProps) => {
             className={`
               p-4 rounded-lg transition-all duration-200 transform
               ${mood.color}
-              ${selectedMood === mood.type ? 'scale-110 ring-2 ring-purple-500' : ''}
+              ${selected === mood.type ? 'scale-110 ring-2 ring-purple-500' : ''}
               ${hoveredMood === mood.type ? 'scale-105' : ''}
               flex flex-col items-center justify-center
             `}

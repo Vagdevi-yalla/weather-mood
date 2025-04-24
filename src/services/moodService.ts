@@ -1,4 +1,4 @@
-import { MoodEntry, WeatherData } from '../types';
+import { MoodEntry, WeatherData, MoodType } from '../types';
 
 const STORAGE_KEY = 'mood_entries';
 
@@ -28,7 +28,21 @@ export const moodService = {
   getAverageMood: (): number => {
     const entries = moodService.getAllEntries();
     if (entries.length === 0) return 0;
-    const sum = entries.reduce((acc, entry) => acc + entry.mood, 0);
+
+    // assign each string mood a numeric value
+    const score: Record<MoodType, number> = {
+      happy:   5,
+      excited: 4,
+      calm:    3,
+      sad:     2,
+      angry:   1,
+    };
+
+    const sum = entries.reduce(
+      (acc, entry) => acc + score[entry.mood],
+      0
+    );
+
     return Number((sum / entries.length).toFixed(1));
   }
 }; 

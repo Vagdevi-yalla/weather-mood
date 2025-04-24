@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { moodService } from '../services/moodService';
-import { MoodEntry } from '../types';
+import { MoodEntry, MoodType } from '../types';
 
 const Notes = () => {
   const [entries, setEntries] = useState<MoodEntry[]>([]);
@@ -25,25 +25,25 @@ const Notes = () => {
     setShowDeleteConfirm(null);
   };
 
-  const getMoodEmoji = (mood: number): string => {
+  const getMoodEmoji = (mood: MoodType): string => {
     switch (mood) {
-      case 1: return '😊';
-      case 2: return '⚡';
-      case 3: return '☁';
-      case 4: return '😢';
-      case 5: return '😠';
-      default: return '❓';
+      case 'happy':   return '😊';
+      case 'excited': return '⚡';
+      case 'calm':    return '☁';
+      case 'sad':     return '😢';
+      case 'angry':   return '😠';
+      default:        return '❓';
     }
   };
 
-  const getMoodLabel = (mood: number): string => {
+  const getMoodLabel = (mood: MoodType): string => {
     switch (mood) {
-      case 1: return 'Happy';
-      case 2: return 'Energetic';
-      case 3: return 'Calm';
-      case 4: return 'Sad';
-      case 5: return 'Angry';
-      default: return 'Unknown';
+      case 'happy':   return 'Happy';
+      case 'excited': return 'Energetic';
+      case 'calm':    return 'Calm';
+      case 'sad':     return 'Sad';
+      case 'angry':   return 'Angry';
+      default:        return 'Unknown';
     }
   };
 

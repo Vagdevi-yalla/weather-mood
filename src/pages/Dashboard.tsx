@@ -40,7 +40,9 @@ export const Dashboard = () => {
         ];
         setQuote(quotes[Math.floor(Math.random() * quotes.length)]);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch weather data');
+        const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
+        setError(errorMessage);
+        console.error('Dashboard error:', err);
       } finally {
         setIsLoading(false);
       }
@@ -93,7 +95,16 @@ export const Dashboard = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-red-500">{error}</div>
+        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+          <h2 className="text-xl font-semibold text-red-600 mb-4">Error</h2>
+          <p className="text-gray-700 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     );
   }
@@ -142,7 +153,7 @@ export const Dashboard = () => {
         <div className={`p-6 rounded-lg shadow-lg ${moodColors.accent} backdrop-blur-md bg-opacity-90`}>
           <h2 className={`text-2xl font-semibold mb-4 ${moodColors.text}`}>How are you feeling?</h2>
           <MoodSelector 
-            selectedMood={selectedMood} 
+            selected={selectedMood} 
             onSelect={setSelectedMood}
           />
           <div className="mt-6">

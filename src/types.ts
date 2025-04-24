@@ -1,4 +1,4 @@
-export type MoodType = 1 | 2 | 3 | 4 | 5;
+export type MoodType = 'happy' | 'excited' | 'calm' | 'sad' | 'angry';
 
 export interface WeatherData {
   temp: number;

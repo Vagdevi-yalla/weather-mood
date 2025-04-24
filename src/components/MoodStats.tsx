@@ -17,7 +17,7 @@ const MoodStats: React.FC<MoodStatsProps> = ({ entries }) => {
     );
   }
 
-  const initialMoodCounts = {
+  const initialMoodCounts: Record<MoodType, number> = {
     happy: 0,
     excited: 0,
     calm: 0,
@@ -25,7 +25,7 @@ const MoodStats: React.FC<MoodStatsProps> = ({ entries }) => {
     angry: 0,
   };
 
-  const moodCounts: Record<MoodType, number> = entries.reduce((counts, entry) => {
+  const moodCounts = entries.reduce((counts, entry) => {
     counts[entry.mood]++;
     return counts;
   }, initialMoodCounts);
@@ -39,40 +39,40 @@ const MoodStats: React.FC<MoodStatsProps> = ({ entries }) => {
       icon: <Smile className="w-5 h-5" />, 
       label: 'Happy',
       count: moodCounts.happy,
-      color: 'bg-mood-happy',
-      textColor: 'text-purple-dark',
+      color: 'bg-yellow-400',
+      textColor: 'text-yellow-700',
     },
     { 
       type: 'excited' as MoodType, 
       icon: <Zap className="w-5 h-5" />, 
       label: 'Excited',
       count: moodCounts.excited,
-      color: 'bg-mood-excited',
-      textColor: 'text-purple-dark',
+      color: 'bg-orange-400',
+      textColor: 'text-orange-700',
     },
     { 
       type: 'calm' as MoodType, 
-      icon: Cloud, 
+      icon: <Cloud className="w-5 h-5" />, 
       label: 'Calm',
       count: moodCounts.calm,
-      color: 'bg-mood-calm',
-      textColor: 'text-purple-dark',
+      color: 'bg-blue-400',
+      textColor: 'text-blue-700',
     },
     { 
       type: 'sad' as MoodType, 
-      icon: Frown, 
+      icon: <Frown className="w-5 h-5" />, 
       label: 'Sad',
       count: moodCounts.sad,
-      color: 'bg-mood-sad',
-      textColor: 'text-purple-dark',
+      color: 'bg-gray-400',
+      textColor: 'text-gray-700',
     },
     { 
       type: 'angry' as MoodType, 
-      icon: Angry, 
+      icon: <Angry className="w-5 h-5" />, 
       label: 'Angry',
       count: moodCounts.angry,
-      color: 'bg-mood-angry',
-      textColor: 'text-purple-dark',
+      color: 'bg-red-400',
+      textColor: 'text-red-700',
     },
   ];
 
@@ -82,14 +82,13 @@ const MoodStats: React.FC<MoodStatsProps> = ({ entries }) => {
       <div className="space-y-3">
         {moodInfo.map((mood) => {
           const percentage = getMoodPercentage(mood.count);
-          const Icon = mood.icon;
           
           return (
             <div key={mood.type} className="space-y-1">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Icon className="w-4 h-4 mr-2 text-gray-600" />
-                  <span className="text-sm text-gray-600">{mood.label}</span>
+                  {mood.icon}
+                  <span className="text-sm text-gray-600 ml-2">{mood.label}</span>
                 </div>
                 <span className="text-sm font-medium text-gray-600">
                   {mood.count} ({percentage}%)

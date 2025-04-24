@@ -7,43 +7,55 @@ const YourMood = () => {
   const [selectedMood, setSelectedMood] = useState<MoodType | null>(null);
   const [note, setNote] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const moods = [
-    { type: 1 as MoodType, label: 'Happy', icon: '☺' },
-    { type: 2 as MoodType, label: 'Energetic', icon: '⚡' },
-    { type: 3 as MoodType, label: 'Calm', icon: '☁' },
-    { type: 4 as MoodType, label: 'Sad', icon: '☹' },
-    { type: 5 as MoodType, label: 'Angry', icon: '😠' },
+    { type: 'happy' as MoodType, label: 'Happy', icon: '☺' },
+    { type: 'excited' as MoodType, label: 'Energetic', icon: '⚡' },
+    { type: 'calm' as MoodType, label: 'Calm', icon: '☁' },
+    { type: 'sad' as MoodType, label: 'Sad', icon: '☹' },
+    { type: 'angry' as MoodType, label: 'Angry', icon: '😠' },
   ];
 
   const handleSubmit = () => {
     setShowConfirmation(true);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (selectedMood) {
-      const entry = {
-        date: new Date().toISOString(),
-        mood: selectedMood,
-        notes: note,
-        weather: {
-          location:"",
-          temp: 0,
-          humidity: 0,
-          description: 'Not available',
-          icon: '',
-          main: 'Unknown'
-        }
-      };
+      try {
+        setIsLoading(true);
+        setError(null);
+        const entry = {
+          date: new Date().toISOString(),
+          mood: selectedMood,
+          notes: note,
+          weather: {
+            location: "",
+            temp: 0,
+            humidity: 0,
+            description: 'Not available',
+            icon: '',
+            main: 'Unknown'
+          }
+        };
 
-      moodService.addEntry(entry);
-      setShowConfirmation(false);
-      setSelectedMood(null);
-      setNote('');
-      
-      // Navigate to calendar view after saving
-      navigate('/calendar');
+        await moodService.addEntry(entry);
+        setShowConfirmation(false);
+        setSelectedMood(null);
+        setNote('');
+        
+        // Navigate to calendar view after saving
+        navigate('/calendar');
+      } catch (error) {
+        console.error('Failed to save mood entry:', error);
+        setError('Failed to save your mood entry. Please try again.');
+        setShowConfirmation(false);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -114,18 +126,23 @@ const YourMood = () => {
           <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
             <h3 className="text-lg font-semibold mb-4">Confirm Submission</h3>
             <p className="text-gray-600 mb-6">Are you sure you want to submit it?</p>
+            {error && (
+              <p className="text-red-500 mb-4">{error}</p>
+            )}
             <div className="flex space-x-4">
               <button
                 onClick={() => setShowConfirmation(false)}
-                className="flex-1 py-2 border rounded-lg hover:bg-gray-50"
+                disabled={isLoading}
+                className="flex-1 py-2 border rounded-lg hover:bg-gray-50 disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 onClick={handleConfirm}
-                className="flex-1 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                disabled={isLoading}
+                className="flex-1 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
               >
-                Confirm
+                {isLoading ? 'Saving...' : 'Confirm'}
               </button>
             </div>
           </div>

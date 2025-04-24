@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GeoLocation, WeatherData } from '../types';
+import { GeoLocation, WeatherData, MoodType } from '../types';
 
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 const BASE_URL = 'https://api.openweathermap.org';
